@@ -24,10 +24,16 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private FabricanteService fabricanteService;
+
     @GetMapping("/productos")
     public String listar(Model model) {
 
         List<Producto> listAllProd =  productoService.listAll();
+        List<Fabricante> listFab = fabricanteService.listAll();
+
+        model.addAttribute("listaFabricantes", listFab);
         model.addAttribute("listaProductos", listAllProd);
 
         return "productos";
@@ -38,6 +44,8 @@ public class ProductoController {
     public String detalle(Model model, @PathVariable Integer id ) {
 
         Producto fabricante = productoService.one(id);
+        List<Fabricante> listFab = fabricanteService.listAll();
+        model.addAttribute("listaFabricantes", listFab);
         model.addAttribute("fabricante", fabricante);
 
         return "detalle-producto";
@@ -48,6 +56,9 @@ public class ProductoController {
     public String crear(Model model) {
 
         Producto producto = new Producto();
+        List<Fabricante> listFab = fabricanteService.listAll();
+
+        model.addAttribute("listaFabricantes", listFab);
         model.addAttribute("producto", producto);
 
         return "crear-producto";
@@ -67,6 +78,8 @@ public class ProductoController {
     public String editar(Model model, @PathVariable Integer id) {
 
         Producto producto = productoService.one(id);
+        List<Fabricante> listFab = fabricanteService.listAll();
+        model.addAttribute("listaFabricantes", listFab);
         model.addAttribute("producto", producto);
 
         return "editar-producto";
